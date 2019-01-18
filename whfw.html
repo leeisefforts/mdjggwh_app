@@ -99,13 +99,11 @@
   <!--文艺欣赏右边内容-->
   <div v-if="sp_show" class="sp_con" :style="d_height">
     <ul>
-      <li v-for="item in sp_con">
-        <a href="whfw_info_sp.html">
-          <div class="top"><img :src="item.imgurl" alt=""></div>
+      <li v-for="item in con"  @click='con_sp(item.id)'>
+          <div class="top"><img :src="item.image" alt=""></div>
           <div class="bottom">
             <div class="title">{{item.title}}</div>
           </div>
-        </a>
       </li>
     </ul>
 		<div class="no_data" v-if='no_data' style=" text-align: center;margin-top: 20px;margin-right: 20px;">暂无数据！</div>
@@ -134,23 +132,23 @@
       activeKey : 0,
       badge : [{nav:'政策法规',id:'20'},{nav:'审批服务',id:'21'},{nav:'文艺欣赏',id:'22'},{nav:'我要预约',id:'23'},{nav:'网上书房',id:''},{nav:'网站链接',id:'24'}],
       con : [],
-      sp_con : [{
-        title : '“远东杯”国标舞大赛开幕式',
-        miaoshi : '第九届“远东杯”国际标准舞大赛',
-        imgurl : 'img/1.jpg'
-      },{
-        title : '镜泊湖瀑布',
-        miaoshi : '镜泊湖瀑布航拍',
-        imgurl : 'img/4.jpg'
-      },{
-        title : '“远东杯”国标舞大赛开幕式',
-        miaoshi : '第九届“远东杯”国际标准舞大赛',
-        imgurl : 'img/1.jpg'
-      },{
-        title : '镜泊湖瀑布',
-        miaoshi : '镜泊湖瀑布航拍',
-        imgurl : 'img/4.jpg'
-      }],
+//       sp_con : [{
+//         title : '“远东杯”国标舞大赛开幕式',
+//         miaoshi : '第九届“远东杯”国际标准舞大赛',
+//         imgurl : 'img/1.jpg'
+//       },{
+//         title : '镜泊湖瀑布',
+//         miaoshi : '镜泊湖瀑布航拍',
+//         imgurl : 'img/4.jpg'
+//       },{
+//         title : '“远东杯”国标舞大赛开幕式',
+//         miaoshi : '第九届“远东杯”国际标准舞大赛',
+//         imgurl : 'img/1.jpg'
+//       },{
+//         title : '镜泊湖瀑布',
+//         miaoshi : '镜泊湖瀑布航拍',
+//         imgurl : 'img/4.jpg'
+//       }],
       activeClass : 0,
       d_height : {
         'min-height' : ($(document).height()-46)+'px',
@@ -245,6 +243,11 @@
 			//点击进入详情
 			con_ifo :function(item){
 				window.location.href = 'whfw_info.html?id=' + item
+				console.log(item)
+			},
+			//文艺欣赏
+			con_sp :function(item){
+				window.location.href = 'whfw_info_sp.html?id=' + item
 				console.log(item)
 			},
 			//网站链接点击

@@ -6,6 +6,7 @@
   <title>文化活动</title>
   <link rel="stylesheet" href="css/vant.css">
   <link rel="stylesheet" href="css/public.css">
+  <script src="js/public_js.js"></script>
   <script src="js/jquery.js"></script>
   <script src="js/vue.js"></script>
   <script src="js/vue_vant.js"></script>
@@ -24,21 +25,45 @@
 <div class="body">
 
   <div class="info_con">
-    <div class="title">“远东杯”国标舞大赛开幕式</div>
+    <div class="title">{{title}}</div>
     <div class="text">
       <video style="width: 100%" src="img/sp.mp4" autoplay controls></video>
     </div>
   </div>
 
 
-  <van-nav-bar title="文化服务>文艺欣赏" left-text="返回" fixed left-arrow @click-left="onClickLeft"/>
+  <van-nav-bar title="文化服务" left-text="返回" fixed left-arrow @click-left="onClickLeft"/>
 </div>
 </body>
 <script type="text/javascript">
   new Vue({
     el : '.body',
     data : {
-
+				title : ''
+    },
+    //页面编译之后
+    created: function () {
+      var _this = this;
+			var _id = getUrlParam('id')
+			console.log(getUrlParam('id'))
+			// 请求数据
+ 			$.ajax({
+ 				url : 'http://132.232.133.48:8889/admin/getinfo/getcontent/',
+ 				type : 'POST',
+ 				dataType : 'json',
+ 				crossDomain : true,
+ 				data : {
+					id : _id
+ 				},
+ 				success : function(e){
+ 					console.log(e)
+					_this.title = e.result[0].title
+ 				},
+ 				error: function(e){
+ 					console.log(e)
+ 				}
+ 			})
+		
     },
     methods : {
       //点击返回
