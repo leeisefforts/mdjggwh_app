@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>文化活动</title>
+  <link rel="stylesheet" href="css/vant.css">
+  <link rel="stylesheet" href="css/public.css">
+  <script src="js/jquery.js"></script>
+  <script src="js/vue.js"></script>
+  <script src="js/vue_vant.js"></script>
+  <style>
+    body{
+      background: #f4f7fa;
+    }
+    .info_con .title{
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="body">
+
+  <div class="info_con">
+    <div class="title">“远东杯”国标舞大赛开幕式</div>
+    <div class="text">
+      <video style="width: 100%" src="img/sp.mp4" autoplay controls></video>
+    </div>
+  </div>
+
+
+  <van-nav-bar title="文化活动>会议" left-text="返回" fixed left-arrow @click-left="onClickLeft"/>
+</div>
+</body>
+<script type="text/javascript">
+  new Vue({
+    el : '.body',
+    data : {
+
+    },
+    methods : {
+      //点击返回
+      onClickLeft : function () {
+        window.location.href = 'whhd.html';
+      },
+    }
+  })
+</script>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>登录</title>
+  <link rel="stylesheet" href="css/vant.css">
+  <link rel="stylesheet" href="css/public.css">
+  <link rel="stylesheet" href="css/mui.min.css">
+  <script src="js/jquery.js"></script>
+  <script src="js/vue.js"></script>
+  <script src="js/vue_vant.js"></script>
+    <script src="js/mui.min.js"></script>
+  <style>
+    body{
+      background: #fff;
+    }
+    .logo img{
+      width: 50%;
+      display: block;
+      margin: 7% auto;
+    }
+    .login{
+      width: 80%;
+      margin: 0 auto;
+    }
+    .login input{
+      width: 100%;
+      height: 50px;
+      border-radius: 5px;
+      border: navajowhite;
+      background: #f5f5f5;
+      text-indent: 15px;
+    }
+    .login .row{
+      margin:6% auto 3% auto;
+    }
+    .zc span{
+      display: inline-block;
+      width: 49%;
+    }
+    .zc .ljzc{
+      text-align: right;
+    }
+    .zc .ljzc a{
+      color : #04a9f5;
+    }
+    .zc .wjmm{
+      color: #666;
+    }
+		/* //其他方式登录 */
+		.dsf_login{
+			width: 80%;
+			margin: 20% auto 0 auto;
+			border-top: 1px solid #f1f1f1;
+		}
+		.dsf_login .title{
+			display: block;
+			width: 100%;
+			position: relative;
+			top: -13px;
+			text-align: center;
+			color: #666;
+		}
+		.dsf_login ul{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			 margin-top: 15px;
+		}
+		.dsf_login li{
+			width: 60px;
+			height: 60px;
+			float: left;
+			text-align: center;
+			background: #f1f1f1;
+			border-radius: 50%;
+		}
+		.dsf_login li img{
+			width: 35px;
+			height: 35px;
+			margin-top: 12px;
+		}
+		.mui-toast-container{
+			bottom : 45%;
+		}
+  </style>
+</head>
+<body>
+<div class="body">
+  <div class="zw" style="height: 46px"></div>
+
+  <div class="logo"><img src="img/logo_2.png" alt=""></div>
+
+
+  <div class="login">
+      <div class="row">
+        <input type="text" placeholder="用户名" v-model="username">
+      </div>
+    <div class="row">
+      <input type="text" placeholder="密码" v-model="password">
+    </div>
+    <div class="row">
+      <div class="public_btn" @click='login'>登录</div>
+    </div>
+    <div class="zc">
+      <span class="wjmm">忘记密码？</span>
+      <span class="ljzc"><a href="reg.html">立即注册></a></span>
+    </div>
+  </div>
+
+	<div class="dsf_login">
+		<div class="title">&nbsp其他方式登录&nbsp</div>
+		<div class="dsf_login_con">
+			<ul>
+				<li @click='WX_login'><img src="img/wx.png" alt=""></li>
+				<li @click='QQ_login'><img style=" width: 30px;height: 30px;margin-top: 15px;" src="img/qq.png" alt=""></li>
+				<li @click='WB_login'><img src="img/wb.png" alt=""></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div v-if='loading_show' class="loading">
+		<div class="loading_con"><img src="img/loading.gif" alt=""></div>
+	</div>
+	
+  <van-nav-bar title="登录" left-text="返回" fixed left-arrow @click-left="onClickLeft"/>
+</div>
+</body>
+<script type="text/javascript">
+
+  new Vue({
+    el : '.body',
+    data : {
+      username : '',
+      password : '',
+			islogin : false,
+			loading_show : false
+    },
+    //页面编译之后
+    created: function () {
+// 			var _this = this;
+//       console.log(document.cookie)
+// 			// _this.loading_show = true
+// 			if(document.cookie){
+// 				window.location.href = 'user.html'
+// 			}
+    },
+    methods : {
+      onClickLeft : function () {
+        window.location.href = 'index.html';
+      },
+			WX_login : function(){
+				console.log("微信");
+        authLogin('weixin');
+			},
+			QQ_login : function(){
+				console.log("QQ");
+        authLogin('qq');
+			},
+			WB_login : function(){
+				console.log("微博");
+        authLogin('sinaweibo');
+			},
+			login : function(){
+				var _this = this;
+				var name = _this.username;
+				var password  = _this.password
+				_this.loading_show = true
+				// ajax
+				$.ajax({
+					url : 'http://132.232.133.48:8889/admin/userlogin/',
+					type : 'POST',
+					dataType : 'json',
+					crossDomain : true,
+					data : {
+						username: name,
+						userpassword : password
+					},
+					success : function(e){
+						_this.loading_show = false
+						if(e.code == 200){
+							mui.toast(e.msg)
+							document.cookie = 'login = Ylogin '
+							setTimeout(function(){
+								window.location.href = 'user.html'
+							},2000)
+						}else{
+							 mui.toast(e.msg) 
+						}
+					},
+					error: function(e){
+						console.log(e)
+					}
+				})
+			}
+		}
+  })
+	
+	
+
+
+	//第三方登录
+	var auths = ''
+	mui.plusReady(function() {  
+
+		plus.oauth.getServices(function(services) {
+				auths = services;
+		}, function(e) {
+				alert("获取登录服务列表失败：" + e.message + " - " + e.code);
+		});
+	})
+	
+	// 第三方登录操作
+	function authLogin(type) {
+		var s;
+		for (var i = 0; i < auths.length; i++) {
+			if (auths[i].id == type) {
+					s = auths[i];
+					break;
+			}
+		}
+		if (!s.authResult) {
+			s.login(function(e) {
+				mui.toast("登录认证成功！");
+				// 微信登录认证信息
+				s.getUserInfo(function(e) {
+					 var josnStr = JSON.stringify(s.userInfo);
+					 var jsonObj = s.userInfo;
+					 alert("-----获取用户信息成功-----："
+						+ josnStr
+						);
+					 console.log("获取用户信息成功：" + josnStr);
+					 authLogout();
+			 }, function(e) {
+					 alert("获取用户信息失败：" + e.message + " - " + e.code);
+			 });
+			}, function(e) {
+					mui.toast("登录认证失败！");
+			});
+		} else {
+				mui.toast("已经登录认证！");
+		}
+	}
+	//注销
+	function authLogout() {
+		for (var i in auths) {
+			var s = auths[i];
+			if (s.authResult) {
+					s.logout(function(e) {
+							console.log("注销登录认证成功！");
+					}, function(e) {
+							console.log("注销登录认证失败！");
+					});
+			}
+		}
+	}
+
+</script>
+</html>

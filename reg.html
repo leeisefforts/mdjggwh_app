@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>登录</title>
+  <link rel="stylesheet" href="css/vant.css">
+  <link rel="stylesheet" href="css/public.css">
+  <link rel="stylesheet" href="css/mui.min.css">
+  <script src="js/jquery.js"></script>
+  <script src="js/vue.js"></script>
+  <script src="js/vue_vant.js"></script>
+  <script src="js/mui.js"></script>
+  <style>
+    body{
+      background: #fff;
+    }
+    .logo img{
+      width: 50%;
+      display: block;
+      margin: 7% auto;
+    }
+    .login{
+      width: 80%;
+      margin: 0 auto;
+    }
+    .login input{
+      width: 100%;
+      height: 50px;
+      border-radius: 5px;
+      border: navajowhite;
+      background: #f5f5f5;
+      text-indent: 15px;
+    }
+    .login .row{
+      margin: 6% auto 3% auto;
+    }
+    .zc .ljzc{
+      float: right;
+    }
+    .zc .ljzc{
+      text-align: right;
+    }
+    .zc .ljzc a{
+      color : #04a9f5;
+    }
+    .van-checkbox{
+      width: 60%;
+      float: left;
+    }
+    .van-checkbox__label{
+      color: #666;
+    }
+		.mui-toast-container{
+			bottom : 45%;
+		}
+  </style>
+</head>
+<body>
+<div class="body">
+  <div class="zw" style="height: 46px"></div>
+
+  <div class="logo"><img src="img/logo_2.png" alt=""></div>
+
+
+  <div class="login">
+    <div class="row">
+      <input type="text" v-model="name" @blur='name_blur' placeholder="用户名">
+    </div>
+    <div class="row">
+      <input type="text" v-model="mail"  @blur='mail_blur' placeholder="电子邮箱">
+    </div>
+    <div class="row">
+      <input type="password" v-model="password"  @blur='pass_blur' placeholder="设置密码">
+    </div>
+    <div class="row">
+      <input type="password"  v-model="password2"  @blur='pass2_blur'  placeholder="确认密码">
+    </div>
+    <div class="row">
+      <div class="public_btn" @click='reg'>注册</div>
+    </div>
+    <div class="zc">
+      <van-checkbox v-model="checked" checked-color="#04a9f5">我已阅读并接受</van-checkbox>
+      <span class="ljzc"><a href="login.html">马上登录></a></span>
+    </div>
+  </div>
+
+
+  <van-nav-bar title="注册" left-text="返回" fixed left-arrow @click-left="onClickLeft"/>
+</div>
+</body>
+
+<script type="text/javascript">
+
+  var Vue = new Vue({
+    el : '.body',
+    data : {
+      name : '',
+			mail : '',
+      password : '',
+			password2 : '',
+      checked : true,
+			flag_name : false,
+			flag_mail : false,
+			flag_pass : false,
+			flag_pass2 : false
+    },
+    methods : {
+      onClickLeft : function () {
+        window.location.href = 'login.html';
+      },
+			//用户名
+			name_blur :function(){
+				var _this = this;
+				var name = _this.name;
+				if(name.length < 5 || name.length > 18){
+					mui.toast('用户名长度不得低于5位，不得超过18位');
+					_this.flag_name = false;
+					return false;
+				}
+				// ajax
+				$.ajax({
+					url : 'http://132.232.133.48:8889/admin/sign_up/',
+					type : 'POST',
+					dataType : 'json',
+					crossDomain : true,
+					data : {
+						username: name
+					},
+					success : function(e){
+						if(e.code == 200){
+							_this.flag_name = true;
+							mui.toast(e.msg)
+						}else{
+							 _this.flag_name = false;
+							 mui.toast(e.msg) 
+						}
+					},
+					error: function(e){
+						console.log(e)
+					}
+				})
+			},
+			//电子邮箱
+			mail_blur : function(){
+				var _this = this;
+				var mail = _this.mail;
+				var regex = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g;
+				if(regex.test(mail)){
+					_this.flag_mail = true;
+				}else{
+					mui.toast('电子邮箱格式不正确');
+					_this.flag_mail = false;
+				}
+			},
+			//密码
+			pass_blur : function(){
+				var _this = this;
+				var password = _this.password;
+				if(password.length < 6 || password.length > 18){
+					mui.toast('密码长度不得低于6位，不得超过18位');
+					_this.flag_pass = false;
+					return false;
+				}else{
+					_this.flag_pass = true;
+				}
+			},
+			//确认密码
+			pass2_blur : function(){
+				var _this = this;
+				var password = _this.password;
+				var password2 = _this.password2;
+				if(password == password2 && password != '' && password2 != ''){
+					_this.flag_pass2 = true;
+				}else{
+					mui.toast('密码不正确');
+					_this.flag_pass2 = false;
+				}
+			},
+			//注册
+			reg : function(){
+				var _this = this;
+				var name = _this.name;
+				var mail = _this.mail;
+				var password = _this.password;
+				var password2 = _this.password2;
+				console.log(_this.flag_name +'---' +_this.flag_mail +'---' +_this.flag_pass +'---' +_this.flag_pass2 +'---' +_this.checked )
+				if(_this.flag_name && _this.flag_mail && _this.flag_pass && _this.flag_pass2){
+					if(!_this.checked){
+						mui.toast('请阅读并接受');
+						return false
+					}
+					// ajax
+					$.ajax({
+						url : 'http://132.232.133.48:8889/admin/sign_up/',
+						type : 'POST',
+						dataType : 'json',
+						crossDomain : true,
+						data : {
+							username: name,
+							userpassword : password2,
+							mail : mail
+						},
+						success : function(e){
+							if(e.code == 200){
+								mui.toast(e.msg)
+								setTimeout(function(){
+									window.location.href = 'login.html'
+								},2000)
+							}else{
+								 mui.toast(e.msg) 
+							}
+						},
+						error: function(e){
+							console.log(e)
+						}
+					})
+				}else{
+					mui.toast('注册信息不完善或者不正确') 
+				}
+			}
+    }
+  })
+	
+	// Vue.use(Toast);
+</script>
+</html>

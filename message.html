@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>首页</title>
+  <link rel="stylesheet" href="css/vant.css">
+  <link rel="stylesheet" href="css/public.css">
+  <script src="js/jquery.js"></script>
+  <script src="js/vue.js"></script>
+  <script src="js/vue_vant.js"></script>
+  <style>
+    body{
+      background: #f4f7fa;
+    }
+    .ly .title{
+      width: 100%;
+      height: 50px;
+      border-bottom: 1px solid #f1f1f1;
+    }
+    .ly .title h4{
+      display: inline-block;
+      margin: 0;
+      border-left: 3px solid #04a9f5;
+      padding-left: 20px;
+      margin-top: 14px;
+      font-weight: normal;
+    }
+    .ly .con{
+      width: 100%;
+      margin: 0;
+      height: 100%;
+      padding: 0 0 20px 0;
+    }
+    .van-doc-demo-block__title {
+      margin: 0;
+      font-weight: 400;
+      font-size: 14px;
+      color: #666;
+      padding: 15px 15px 15px;
+      background: #f4f7fa;
+    }
+    .van-button--large{
+      width: 90%;
+      height: 50px;
+      line-height: 48px;
+      margin: 25px auto 0 auto;
+      display: block;
+    }
+
+  </style>
+</head>
+<body>
+<div class="body">
+  <div class="ly">
+    <div class="con">
+			
+      <h2 class="van-doc-demo-block__title">留言类型</h2>
+      <van-radio-group v-model="radio">
+        <van-cell-group>
+          <van-cell style="font-size: 16px;" title="普通留言" clickable @click="radio = '1'">
+            <van-radio name="1" />
+          </van-cell>
+          <van-cell  style="font-size: 16px;" title="投诉建议" clickable @click="radio = '2'">
+            <van-radio name="2" />
+          </van-cell>
+        </van-cell-group>
+      </van-radio-group>
+
+      <h2 class="van-doc-demo-block__title">个人信息</h2>
+
+      <van-cell-group>
+
+        <div class="van-cell van-field" style="padding: 3px 10px;">
+          <van-field v-model="email" label="邮箱" placeholder="请输入邮箱" />
+        </div>
+
+        <div class="van-cell van-field" style="padding: 3px 10px;">
+          <van-field v-model="phone" label="手机号"  placeholder="请输入手机号"  />
+        </div>
+
+        <div class="van-cell van-field" style="padding: 3px 10px;">
+          <van-field v-model="qq" label="QQ"  placeholder="请输入QQ号"  />
+        </div>
+
+      </van-cell-group>
+
+
+      <h2 class="van-doc-demo-block__title">留言信息</h2>
+      <van-cell-group>
+
+        <div class="van-cell van-field" style="padding: 3px 10px;">
+          <van-field v-model="title" label="标题" placeholder="请输入标题" />
+        </div>
+
+        <div class="van-cell van-field" style="padding: 3px 10px;">
+          <van-field v-model="con" label="内容"  placeholder="请输入内容"  />
+        </div>
+
+        <div class="van-cell van-field" style="padding: 3px 10px;">
+          <van-field v-model="code" label="验证码"  placeholder="请输入验证码"  />
+        </div>
+
+      </van-cell-group>
+
+      <div class="public_btn" @click="btn" style="width:90%">发表留言</div>
+
+    </div>
+  </div>
+
+
+  <!--底部tap站位-->
+  <div class="tap_zw" style="height: 65px;"></div>
+  <!--底部tap-->
+  <van-tabbar v-model="active">
+
+    <van-tabbar-item url="index.html">
+      <span>首页</span>
+      <img slot="icon"  slot-scope="props" :src="props.active ? icon.sy_active : icon.sy_normal">
+    </van-tabbar-item>
+
+    <van-tabbar-item url="message.html">
+      <span>留言</span>
+      <img slot="icon"  slot-scope="props" :src="props.active ? icon.ly_active : icon.ly_normal">
+    </van-tabbar-item>
+
+    <van-tabbar-item url="login.html">
+      <span>会员</span>
+      <img slot="icon"  slot-scope="props" :src="props.active ? icon.me_active : icon.me_normal">
+    </van-tabbar-item>
+
+  </van-tabbar>
+
+</div>
+</body>
+<script type="text/javascript">
+
+
+  new Vue({
+    el : '.body',
+    data : {
+      active : 1,
+      radio : '1',
+      email : '',
+      phone : '',
+      qq : '',
+      title : '',
+      con : '',
+      code : '',
+      icon:{
+        sy_normal : 'img/index.png',
+        sy_active : 'img/index_active.png',
+        ly_normal : 'img/ly.png',
+        ly_active : 'img/ly_active.png',
+        me_normal : 'img/me.png',
+        me_active : 'img/me_active.png'
+      }
+    },
+    methods : {
+      btn : function () {
+        console.log(this.con)
+      }
+    }
+  })
+</script>
+</html>

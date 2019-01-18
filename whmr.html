@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>文化名人</title>
+  <link rel="stylesheet" href="css/vant.css">
+  <link rel="stylesheet" href="css/public.css">
+  <script src="js/jquery.js"></script>
+  <script src="js/vue.js"></script>
+  <script src="js/vue_vant.js"></script>
+  <style>
+    body{
+      background: #f4f7fa;
+    }
+    /*右边内容*/
+    .con ul li{
+      width: 90%;
+      color: #555;
+      border-bottom: 1px solid #f1f1f1;
+      position: relative;
+      background: #f7f7f7;
+      margin: 20px auto;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 2px 2px 7px rgba(0,0,0,0.2);
+    }
+    .con .top,.con .top img{
+      width: 100%;
+    }
+    .con .bottom{
+      padding: 10px 20px;
+    }
+    .con ul li a{
+      color: #222;
+    }
+    .con .bottom .miaoshu{
+      font-size: 14px;
+      color: #888;
+      margin-top: 10px;
+    }
+    .con .text{
+      width: 80%;
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .con .title{
+      text-align: center;
+    }
+    .con_arrow{
+      float: right;
+      color: #ababab;
+      position: absolute;
+      top: 18px;
+      right: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="body">
+  <!--左侧导航-->
+  <van-badge-group :style="d_height" :active-key="activeKey" class="van-badge-group">
+    <a class="van-badge van-hairline" v-for="(item,index) in badge" @click="badge_click(index,item.id)" :class="activeClass == index ? 'badge_active':''">
+      <div class="van-badge__text">{{item.nav}}</div>
+    </a>
+  </van-badge-group>
+  <!--右边内容-->
+  <div class="con" :style="d_height">
+    <ul>
+      <li v-for="item in con" :url='item.url'  @click='con_ifo(item.id)'>
+          <div class="top"><img :src="item.image" alt=""></div>
+          <div class="bottom">
+            <div class="title">{{item.title}}</div>
+          </div>
+      </li>
+    </ul>
+		<div class="no_data" v-if='no_data' style=" text-align: center;margin-top: 20px;margin-right: 20px;">暂无数据！</div>
+  </div>
+
+  <van-nav-bar title="文化名人" left-text="返回" fixed left-arrow @click-left="onClickLeft"/>
+</div>
+</body>
+<script type="text/javascript">
+  new Vue({
+    el : '.body',
+    data : {
+      activeKey : 0,
+      badge :[{nav:'画家',id:'58'},{nav:'书法家',id:'59'},{nav:'摄影家',id:'60'},{nav:'作家',id:'61'},{nav:'演员',id:'62'},{nav:'舞蹈家',id:'63'},
+			{nav:'音乐家',id:'64'},{nav:'导演',id:'65'},{nav:'戏曲家',id:'66'},{nav:'理论评论家',id:'67'},{nav:'其他',id:'68'}],
+      con : [],
+      activeClass : 0,
+      d_height : {
+        'min-height' : ($(document).height()-46)+'px',
+        'max-height' : ($(document).height()-46)+'px'
+      },
+			no_data : false
+    },
+    //页面编译之后
+    created: function () {
+      var _this = this;
+			// 请求数据
+ 			$.ajax({
+ 				url : 'http://132.232.133.48:8889/admin/getinfo/',
+ 				type : 'POST',
+ 				dataType : 'json',
+ 				crossDomain : true,
+ 				data : {
+ 					f0: 2,
+ 					f1 : 58,
+ 					f2 : -1
+ 				},
+ 				success : function(e){
+ 					console.log(e)
+					if(e.list.length >= 1){
+						_this.con = e.list;
+						_this.no_data = false;
+					}else{
+						_this.con = e.list;
+						_this.no_data = true;
+					}
+ 				},
+ 				error: function(e){
+ 					console.log(e)
+ 				}
+ 			})
+    },
+    methods : {
+      //点击返回
+      onClickLeft : function () {
+        window.location.href = 'index.html';
+      },
+      //切换标签
+      badge_click : function (index,id) {
+        console.log();
+				var _this = this;
+        this.activeClass = index;
+				
+				// 请求数据
+				$.ajax({
+					url : 'http://132.232.133.48:8889/admin/getinfo/',
+					type : 'POST',
+					dataType : 'json',
+					crossDomain : true,
+					data : {
+						f0: 2,
+						f1 : id,
+						f2 : -1
+					},
+					success : function(e){
+						console.log(e)
+						if(e.list.length >= 1){
+							_this.con = e.list;
+							_this.no_data = false;
+						}else{
+							_this.con = e.list;
+							_this.no_data = true;
+						}
+					},
+					error: function(e){
+						console.log(e)
+					}
+				})
+      },
+			//点击进入详情
+			con_ifo :function(item){
+				window.location.href = 'whmr_info.html?id=' + item
+				console.log(item)
+			},
+    }
+  })
+</script>
+</html>

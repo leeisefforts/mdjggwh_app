@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>历史文化</title>
+  <link rel="stylesheet" href="css/vant.css">
+  <link rel="stylesheet" href="css/public.css">
+  <script src="js/jquery.js"></script>
+  <script src="js/vue.js"></script>
+  <script src="js/vue_vant.js"></script>
+  <script src="js/mui.js"></script>
+  <style>
+    body{
+      background: #f4f7fa;
+    }
+    /*右边内容*/
+    .con ul li{
+      width: 100%;
+      color: #555;
+      padding: 15px 0 11px 0;
+      border-radius: 3px;
+      border-bottom: 1px solid #f1f1f1;
+      position: relative;
+    }
+    .con ul li a{
+      color: #555;
+    }
+    .con .text{
+      width: 80%;
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .con_arrow{
+      float: right;
+      color: #ababab;
+      position: absolute;
+      top: 18px;
+      right: 20px;
+    }
+    /*文艺欣赏右边内容*/
+    .sp_con{
+      width: 80%;
+      float: right;
+      background: #fff;
+      margin-top: 46px;
+      box-sizing: border-box;
+			overflow-y: auto;
+    }
+    .sp_con ul li{
+      width: 90%;
+      color: #555;
+      border-bottom: 1px solid #f1f1f1;
+      position: relative;
+      background: #f7f7f7;
+      margin: 20px auto;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 2px 2px 7px rgba(0,0,0,0.2);
+    }
+    .sp_con ul li:last-child{
+      border: none;
+    }
+    .sp_con .top,.sp_con .top img{
+      width: 100%;
+    }
+    .sp_con .bottom{
+      padding: 10px 20px;
+    }
+    .sp_con ul li a{
+      color: #222;
+    }
+    .sp_con .title{
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="body">
+  <!--左侧导航-->
+  <van-badge-group :style="d_height" :active-key="activeKey" class="van-badge-group">
+    <a class="van-badge van-hairline" v-for="(item,index) in badge" @click="badge_click(index,item.nav,item.id)" :class="activeClass == index ? 'badge_active':''">
+      <div class="van-badge__text">{{item.nav}}</div>
+    </a>
+  </van-badge-group>
+
+  <!--右边内容-->
+  <div v-if="moren_show" class="con" :style="d_height">
+    <ul>
+      <li v-for="item in con" :id='item.id'  @click='con_info(item.id)'>
+          <span class="text">{{item.title}}</span>
+          <van-icon name="arrow" class="con_arrow"/>
+      </li>
+    </ul>
+		<div class="no_data" v-if='no_data' style=" text-align: center;margin-top: 20px;margin-right: 20px;">暂无数据！</div>
+  </div>
+
+  <!--VR右边内容-->
+  <div v-if="sp_show" class="sp_con" :style="d_height">
+    <ul>
+      <li v-for="item in con"  :url='item.url'  @click='con_vr(item.url)'>
+          <div class="top"><img :src="item.image" alt=""></div>
+          <div class="bottom">
+            <div class="title">{{item.title}}</div>
+          </div>
+      </li>
+    </ul>
+		<div class="no_data" v-if='no_data' style=" text-align: center;margin-top: 20px;margin-right: 20px;">暂无数据！</div>
+  </div>
+ 
+
+  <van-nav-bar title="历史文化" left-text="返回" fixed left-arrow @click-left="onClickLeft"/>
+</div>
+</body>
+<script type="text/javascript">
+	mui.init({
+	swipeBack:true, //Boolean(默认false)启用右滑关闭功能
+	statusBarBackground: '#fff', //设置状态栏颜色,仅iOS可用
+	})
+	
+  new Vue({
+    el : '.body',
+    data : {
+      activeKey : 0,
+      badge :[{nav:'文化城市VR展示',id:'53'},{nav:'遗址遗迹',id:'54'},{nav:'可移动产物',id:'55'},{nav:'非物质文化遗产',id:'56'},{nav:'历史回顾',id:'57'}],
+      con : [],
+      sp_con : [],
+      activeClass : 0,
+      d_height : {
+        'min-height' : ($(document).height()-46)+'px',
+        'max-height' : ($(document).height()-46)+'px'
+      },
+      sp_show : true,
+      moren_show : '',
+			no_data :false
+    },
+    //页面编译之后
+    created: function () {
+      var _this = this;
+			// 请求数据
+ 			$.ajax({
+ 				url : 'http://132.232.133.48:8889/admin/getinfo/',
+ 				type : 'POST',
+ 				dataType : 'json',
+ 				crossDomain : true,
+ 				data : {
+ 					f0: 2,
+ 					f1 : 53,
+ 					f2 : -1
+ 				},
+ 				success : function(e){
+ 					console.log(e)
+					if(e.list.length >= 1){
+						_this.con = e.list;
+						_this.no_data = false;
+					}else{
+						_this.con = e.list;
+						_this.no_data = true;
+					}
+ 				},
+ 				error: function(e){
+ 					console.log(e)
+ 				}
+ 			})
+    },
+    methods : {
+      //点击返回
+      onClickLeft : function () {
+        window.location.href = 'index.html';
+      },
+      //切换标签
+      badge_click : function (index,item,id) {
+        console.log(item);
+        this.activeClass = index;
+				var _this =this;
+        if(item == '文化城市VR展示'){
+          _this.sp_show = item;
+          _this.moren_show = false;
+        }else{					
+					_this.sp_show = '';
+					_this.moren_show = true;
+        }
+				// 请求数据
+				$.ajax({
+					url : 'http://132.232.133.48:8889/admin/getinfo/',
+					type : 'POST',
+					dataType : 'json',
+					crossDomain : true,
+					data : {
+						f0: 2,
+						f1 : id,
+						f2 : -1
+					},
+					success : function(e){
+						console.log(e)
+						if(e.list.length >= 1){
+							_this.con = e.list;
+							_this.no_data = false;
+						}else{
+							_this.con = e.list;
+							_this.no_data = true;
+						}
+					},
+					error: function(e){
+						console.log(e)
+					}
+				})
+      },
+			//点击进入VR
+			con_vr :function(item){
+				window.location.href = 'lswh_info_VR.html?url=' + item
+				console.log(item)
+			},
+			//点击进入info
+			con_info :function(item){
+				window.location.href = 'lswh_info.html?id=' + item
+				console.log(item)
+			},
+    }
+  })
+</script>
+</html>

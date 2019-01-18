@@ -1,0 +1,99 @@
+body{
+	font-family: 微软雅黑,arial;
+}
+.p_box_con{
+  width: 100%;
+  background: #fff;
+  margin: 10px auto 0 auto;
+  box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+}
+.van-tabbar-item--active {
+  color: #04a9f5;
+}
+/*按钮*/
+.public_btn,.tuichu{
+  width: 100%;
+  height: 50px;
+  background: #04a9f5;
+  border-radius: 5px;
+  text-align: center;
+  line-height: 50px;
+  margin: 20px auto 0 auto;
+  color: #fff;
+  font-size: 16px;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+}
+.van-nav-bar__text,.van-nav-bar .van-icon{
+  color: #04a9f5;
+}
+
+/*内页左侧导航*/
+.van-badge{
+  background: #f4f7fa;
+  border-bottom: 1px solid #ececec;
+  text-align: center;
+}
+.badge_active{
+  background: #fff;
+  border-color: #04a9f5;
+  border-bottom: none;
+}
+.van-badge-group{
+  margin-top: 46px;
+  width: 20%;
+  float: left;
+  overflow-y: auto;
+}
+.badge_active .van-badge__text{
+  color:#04a9f5;
+}
+/*内页右边内容*/
+.con{
+  width: 80%;
+  float: right;
+  background: #fff;
+  margin-top: 46px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  padding-left: 20px;
+}
+.con .title,.con .miaoshu,.sp_con .title{
+	  overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*详情页左边内容*/
+.info_con{
+  width: 100%;
+  margin-top: 46px;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #fff;
+}
+/* loading */
+.loading{
+	position: fixed;
+	top: 0;
+	background: rgba(0,0,0,0.0);
+	width: 100%;
+	height: 100%;
+	z-index: 9;
+}
+.loading_con{
+	width: 70px;
+	height: 70px;
+	background: rgba(0,0,0,0.5);
+	margin: 75% auto 0 auto;
+	padding: 15px;
+	border-radius: 5px;
+}
+.loading_con img{
+	width: 100%;
+	height: 100%;
+}
+/* info页面内容 */
+.info_con .text img{
+	width: 100% !important;  
+	height: auto !important; 
+}

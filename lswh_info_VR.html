@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>历史文化</title>
+  <link rel="stylesheet" href="css/vant.css">
+  <link rel="stylesheet" href="css/public.css">
+  <script src="js/jquery.js"></script>
+  <script src="js/public_js.js"></script>
+  <script src="js/vue.js"></script>
+  <script src="js/vue_vant.js"></script>
+  <style>
+    body{
+      background: #f4f7fa;
+    }
+    .info_con .title{
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .info_con .text{
+      font-size: 16px;
+      color: #555;
+      letter-spacing: 1px;
+      line-height: 30px;
+    }
+  </style>
+</head>
+<body>
+<div class="body">
+	<iframe :src='url' frameborder='0' style="width: 100%;margin-top: 46px;" :style="d_height"></iframe>
+
+  <van-nav-bar title="历史文化>文化城市VR" left-text="返回" fixed left-arrow @click-left="onClickLeft"/>
+</div>
+</body>
+<script type="text/javascript">
+ new Vue({
+   el : '.body',
+   data : {
+		d_height : {
+		  'height' : ($(document).height()-46)+'px',
+		},
+		url : ''
+   },
+    //页面编译之后
+    created: function () {
+      var _this = this;
+			var url = getUrlParam('url')
+			console.log(getUrlParam('url'))
+			_this.url = url
+    },
+   methods : {
+     //点击返回
+     onClickLeft : function () {
+       window.location.href = 'lswh.html';
+     },
+   }
+ })
+</script>
+</html>

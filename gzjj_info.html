@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>文化活动</title>
+  <link rel="stylesheet" href="css/vant.css">
+  <link rel="stylesheet" href="css/public.css">
+  <script src="js/jquery.js"></script>
+  <script src="js/public_js.js"></script>
+  <script src="js/vue.js"></script>
+  <script src="js/vue_vant.js"></script>
+  <style>
+    body{
+      background: #f4f7fa;
+    }
+    .info_con .title{
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .info_con .text{
+      font-size: 16px;
+      color: #555;
+      letter-spacing: 1px;
+      line-height: 30px;
+    }
+  </style>
+</head>
+<body>
+<div class="body">
+
+  <div class="info_con">
+	  <div class="title">{{title}}</div>
+	  <div class="text" v-html='content'></div>	
+	</div>
+
+  <van-nav-bar title="工作简介" left-text="返回" fixed left-arrow @click-left="onClickLeft"/>
+</div>
+</body>
+<script type="text/javascript">
+  new Vue({
+    el : '.body',
+    data : {
+			title : '',
+			content : ''
+    },
+    //页面编译之后
+    created: function () {
+      var _this = this;
+			var _id = getUrlParam('id')
+			console.log(getUrlParam('id'))
+			// 请求数据
+ 			$.ajax({
+ 				url : 'http://132.232.133.48:8889/admin/getinfo/getcontent/',
+ 				type : 'POST',
+ 				dataType : 'json',
+ 				crossDomain : true,
+ 				data : {
+					id : _id
+ 				},
+ 				success : function(e){
+ 					console.log(e)
+					_this.content = e.result[0].content
+					_this.title = e.result[0].title
+ 				},
+ 				error: function(e){
+ 					console.log(e)
+ 				}
+ 			})
+		
+    },
+    methods : {
+      //点击返回
+      onClickLeft : function () {
+        window.location.href = 'gzjj.html';
+      },
+    }
+  })
+</script>
+</html>
