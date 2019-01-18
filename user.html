@@ -54,6 +54,9 @@
 		.mui-toast-container{
 			bottom : 45%;
 		}
+		.van-field--min-height .van-field__control{
+			min-height: 120px;
+		}
   </style>
 </head>
 <body>
@@ -84,10 +87,6 @@
           <van-field type='number' v-model="phone" label="手机号"  placeholder="请输入手机号" @blur='phone_blur'  />
         </div>
 
-        <div class="van-cell van-field" style="padding: 3px 10px;">
-          <van-field  type='number' v-model="qq" label="QQ"  placeholder="请输入QQ号" @blur='qq_blur'  />
-        </div>
-
       </van-cell-group>
 
 
@@ -95,11 +94,7 @@
       <van-cell-group>
 
         <div class="van-cell van-field" style="padding: 3px 10px;">
-          <van-field v-model="title" label="标题" placeholder="请输入标题"  @blur='title_blur' />
-        </div>
-
-        <div class="van-cell van-field" style="padding: 3px 10px;">
-          <van-field v-model="con" label="内容"  placeholder="请输入内容"   @blur='con_blur' />
+          <van-field v-model="con" label="内容" type='textarea'  placeholder="请输入内容"   @blur='con_blur' />
         </div>
 
       </van-cell-group>
@@ -110,6 +105,9 @@
     <div class="tuichu" @click="tuichu" style="width:90%;background: #da0d0d;">退出登录</div>
   </div>
 
+	<div v-if='loading_show' class="loading">
+		<div class="loading_con"><img src="img/loading.gif" alt=""></div>
+	</div>
 
   <!--底部tap站位-->
   <div class="tap_zw" style="height: 65px;"></div>
@@ -141,8 +139,6 @@
       radio : '1',
       mail : '',
       phone : '',
-      qq : '',
-      title : '',
       con : '',
       code : '',
       icon:{
@@ -157,15 +153,15 @@
 			flag_mail : false,
 			flag_qq : false,
 			flag_title : false,
-			flag_con : false
+			flag_con : false,
+			loading_show : false
     },
     //页面编译之后
     created: function () {
 			var _this = this;
       console.log(document.cookie)
-			// _this.loading_show = true
 			if(!document.cookie){
-				// window.location.href = 'login.html'
+				window.location.href = 'login.html'
 			}
     },
     methods : {
@@ -193,30 +189,6 @@
 						_this.flag_phone = true;
 					}
 			},
-			//qq
-			qq_blur : function(){
-					var _this = this;
-					var qq = _this.qq;
-					if(qq.length < 1){
-						mui.toast('请填写qq号');
-						_this.flag_qq = false;
-						return false;
-					}else{
-						_this.flag_qq = true;
-					}
-			},
-			//标题
-			title_blur : function(){
-					var _this = this;
-					var title = _this.title;
-					if(title.length < 1){
-						mui.toast('请填写标题');
-						_this.flag_title = false;
-						return false;
-					}else{
-						_this.flag_title = true;
-					}
-			},
 			//内容
 			con_blur : function(){
 					var _this = this;
@@ -238,9 +210,10 @@
 				var title = _this.title;
 				var con = _this.con;
 				var radio = '';
-				console.log(_this.flag_mail +'---' +_this.flag_phone +'---' +_this.flag_qq +'---' +_this.flag_title +'---' +_this.flag_con )
+				_this.loading_show = true
+				console.log(_this.flag_mail +'---' +_this.flag_phone +'---' +_this.flag_con )
 				console.log(_this.radio)
-				if(_this.flag_mail && _this.flag_phone && _this.flag_qq && _this.flag_title  && _this.flag_con){
+				if(_this.flag_mail && _this.flag_phone  && _this.flag_con){
 					if(_this.radio == 1){
 						radio = '普通'
 					}else{
@@ -256,11 +229,10 @@
 							category : radio,
 							mail : _this.mail,
 							phone : _this.phone,
-							qq : _this.qq,
-							title : _this.title,
 							content : _this.con
 						},
 						success : function(e){
+							_this.loading_show = false
 							if(e.code == 200){
 								mui.toast(e.msg)
 								setTimeout(function(){

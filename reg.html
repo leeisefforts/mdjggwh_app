@@ -84,7 +84,10 @@
       <span class="ljzc"><a href="login.html">马上登录></a></span>
     </div>
   </div>
-
+	
+	<div v-if='loading_show' class="loading">
+		<div class="loading_con"><img src="img/loading.gif" alt=""></div>
+	</div>
 
   <van-nav-bar title="注册" left-text="返回" fixed left-arrow @click-left="onClickLeft"/>
 </div>
@@ -103,7 +106,8 @@
 			flag_name : false,
 			flag_mail : false,
 			flag_pass : false,
-			flag_pass2 : false
+			flag_pass2 : false,
+			loading_show : false
     },
     methods : {
       onClickLeft : function () {
@@ -184,6 +188,7 @@
 				var mail = _this.mail;
 				var password = _this.password;
 				var password2 = _this.password2;
+				_this.loading_show = true
 				console.log(_this.flag_name +'---' +_this.flag_mail +'---' +_this.flag_pass +'---' +_this.flag_pass2 +'---' +_this.checked )
 				if(_this.flag_name && _this.flag_mail && _this.flag_pass && _this.flag_pass2){
 					if(!_this.checked){
@@ -202,6 +207,7 @@
 							mail : mail
 						},
 						success : function(e){
+						_this.loading_show = false
 							if(e.code == 200){
 								mui.toast(e.msg)
 								setTimeout(function(){
@@ -216,6 +222,7 @@
 						}
 					})
 				}else{
+						_this.loading_show = false
 					mui.toast('注册信息不完善或者不正确') 
 				}
 			}

@@ -45,12 +45,12 @@
 		<div class="body">
 			<!--左侧导航-->
 			<van-badge-group :style="d_height" :active-key="activeKey" class="van-badge-group">
-				<a class="van-badge van-hairline" v-for="(item,index) in badge" @click="badge_click(index,item.id)" :class="activeClass == index ? 'badge_active':''">
+				<a class="van-badge van-hairline" v-for="(item,index) in badge" @click="badge_click(index,item.nav,item.id)" :class="activeClass == index ? 'badge_active':''">
 					<div class="van-badge__text">{{item.nav}}</div>
 				</a>
 			</van-badge-group>
 			<!--右边内容-->
-			<div class="con" :style="d_height">
+			<div class="con" v-if="moren_show"  :style="d_height">
 				<ul>
 					<li v-for="item in con" :id=item.id @click='con_ifo(item.id)'>
 							<span class="text">{{item.title}}</span>
@@ -60,6 +60,17 @@
 				<div class="no_data" v-if='no_data' style=" text-align: center;margin-top: 20px;margin-right: 20px;">暂无数据！</div>
 			</div>
 
+			<!--广播右边内容-->
+			<div v-if="sp_show" class="sp_con con" :style="d_height">
+				<ul>
+					<li v-for="item in con" :id=item.id @click='con_gb(item.content_url)'>
+							<span class="text">{{item.title}}</span>
+							<van-icon name="arrow" class="con_arrow" />
+					</li>
+				</ul>
+				<div class="no_data" v-if='no_data' style=" text-align: center;margin-top: 20px;margin-right: 20px;">暂无数据！</div>
+			</div>
+		 
 			<van-nav-bar title="广播影视" left-text="返回" fixed left-arrow @click-left="onClickLeft" />
 		</div>
 	</body>
@@ -75,7 +86,9 @@
 			'min-height': ($(document).height() - 46) + 'px',
 			'max-height': ($(document).height() - 46) + 'px'
 		},
-		no_data : false
+		no_data : false,
+		moren_show : true,
+		sp_show : false
 	},
 	//页面编译之后
 	created: function () {
@@ -111,11 +124,18 @@
 			window.location.href = 'index.html';
 		},
 		//切换标签
-		badge_click: function(index,id) {
+		badge_click: function(index,item,id) {
 			console.log();
 			this.activeClass = index;
 			$(this).addClass('van-badge_active')
 			var _this = this;
+        if(item == '广播'){
+          _this.sp_show = item;
+          _this.moren_show = false;
+        }else{					
+					_this.sp_show = '';
+					_this.moren_show = true;
+        }
 			// 请求数据
 			$.ajax({
 				url : 'http://132.232.133.48:8889/admin/getinfo/',
@@ -146,6 +166,11 @@
 			window.location.href = 'gbys_info.html?id=' + item
 			console.log(item)
 		},
+		//点击进入广播详情
+		con_gb :function(item){
+			window.location.href = 'gbys_info_gb.html?url=' + item
+			console.log(item)
+		}
 	}
 	})
 	</script>

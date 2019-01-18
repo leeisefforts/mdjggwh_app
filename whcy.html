@@ -99,13 +99,11 @@
   <!--文艺欣赏右边内容-->
   <div v-if="sp_show" class="sp_con" :style="d_height">
     <ul>
-      <li v-for="item in con">
-        <a href="whfw_info_sp.html">
+      <li v-for="item in con" :id=item.id @click='con_ifo(item.id)'>
           <div class="top"><img :src="item.image" alt=""></div>
           <div class="bottom">
             <div class="title">{{item.title}}</div>
           </div>
-        </a>
       </li>
     </ul>
 		<div class="no_data" v-if='no_data' style=" text-align: center;margin-top: 20px;margin-right: 20px;">暂无数据！</div>

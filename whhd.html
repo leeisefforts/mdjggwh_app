@@ -60,23 +60,22 @@
 <div class="body">
   <!--左侧导航-->
   <van-badge-group :style="d_height" :active-key="activeKey" class="van-badge-group">
-    <a class="van-badge van-hairline" v-for="(item,index) in badge" @click="badge_click(index,item)" :class="activeClass == index ? 'badge_active':''">
-      <div class="van-badge__text">{{item}}</div>
+    <a class="van-badge van-hairline" v-for="(item,index) in badge" @click="badge_click(index,item,item.id)" :class="activeClass == index ? 'badge_active':''">
+      <div class="van-badge__text">{{item.nav}}</div>
     </a>
   </van-badge-group>
   <!--右边内容-->
   <div class="con" :style="d_height">
     <ul>
-      <li v-for="item in con_list">
-        <a href="whhd_info.html">
+      <li v-for="item in con_list" :id=item.id @click='con_ifo(item.id)'>
           <div class="top"><img :src="item.image" alt=""></div>
           <div class="bottom">
             <div class="title">{{item.title}}</div>
             <div class="miaoshu">{{item.Introduction}}</div>
           </div>
-        </a>
       </li>
     </ul>
+		<div class="no_data" v-if='no_data' style=" text-align: center;margin-top: 20px;margin-right: 20px;">暂无数据！</div>
   </div>
 
   <van-nav-bar title="文化活动" left-text="返回" fixed left-arrow @click-left="onClickLeft"/>
@@ -87,13 +86,14 @@
     el : '.body',
     data : {
       activeKey : 0,
-      badge : ['会议','演出','讲座','培训','展览','赛事','对外交流','其他'],
+      badge :  [{nav:'会议',id:'9'},{nav:'演出',id:'10'},{nav:'讲座',id:'11'},{nav:'培训',id:'77'},{nav:'展览',id:'12'},{nav:'赛事',id:'13'},{nav:'对外交流',id:'14'},{nav:'其他',id:'15'}],
       con_list : [],
       activeClass : 0,
       d_height : {
         'min-height' : ($(document).height()-46)+'px',
         'max-height' : ($(document).height()-46)+'px'
-      }
+      },
+			no_data : false
     },
     //页面编译之后
     created: function () {
@@ -107,12 +107,19 @@
 				dataType : 'json',
 				crossDomain : true,
 				data : {
-					f0: 2,
-					f1 : 20,
+					f0: 1,
+					f1 : 9,
 					f2 : -1
 				},
-				success : function(r){
-					_this.con_list = r.list
+				success : function(e){
+					
+					if(e.list.length >= 1){
+						_this.con_list = e.list;
+						_this.no_data = false;
+					}else{
+						_this.con_list = e.list;
+						_this.no_data = true;
+					}
 				},
 				error: function(e){
 					console.log(e)
@@ -127,9 +134,40 @@
         window.location.href = 'index.html';
       },
       //切换标签
-      badge_click : function (index,item) {
-        this.activeClass = index;
-      }
+      badge_click : function (index,item,id) {
+				var _this = this;
+        _this.activeClass = index;
+				// 请求数据
+				$.ajax({
+					url : 'http://132.232.133.48:8889/admin/getinfo/',
+					type : 'POST',
+					dataType : 'json',
+					crossDomain : true,
+					data : {
+						f0: 1,
+						f1 : id,
+						f2 : -1
+					},
+					success : function(e){
+						console.log(e)
+						if(e.list.length >= 1){
+							_this.con_list = e.list;
+							_this.no_data = false;
+						}else{
+							_this.con_list = e.list;
+							_this.no_data = true;
+						}
+					},
+					error: function(e){
+						console.log(e)
+					}
+				})
+      },
+			//点击进入详情
+			con_ifo :function(item){
+				window.location.href = 'whhd_info.html?id=' + item
+				console.log(item)
+			},
     }
   })
 </script>

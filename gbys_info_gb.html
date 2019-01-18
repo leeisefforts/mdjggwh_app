@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>历史文化</title>
+  <title>广播影视</title>
   <link rel="stylesheet" href="css/vant.css">
   <link rel="stylesheet" href="css/public.css">
   <script src="js/jquery.js"></script>
@@ -29,9 +29,9 @@
 </head>
 <body>
 <div class="body">
-	<iframe :src="url" frameborder='0' style="width: 100%;margin-top: 46px;" :style="d_height"></iframe>
+	<iframe :src='url' frameborder='0' style="width: 100%;margin-top: 46px;" :style="d_height"></iframe>
 
-  <van-nav-bar title="文化服务" left-text="返回" fixed left-arrow @click-left="onClickLeft"/>
+  <van-nav-bar title="广播影视" left-text="返回" fixed left-arrow @click-left="onClickLeft"/>
 </div>
 </body>
 <script type="text/javascript">
@@ -46,18 +46,14 @@
     //页面编译之后
     created: function () {
       var _this = this;
-			var _id = getUrlParam('url')
+			var url = getUrlParam('url')
 			console.log(getUrlParam('url'))
-			if(getUrlParam('url') == 'wssf'){
-				_this.url = 'http://zq.bookan.com.cn/?t=index&id=21278'
-			} else{
-				_this.url = getUrlParam('url') 
-			}
+			_this.url = url
     },
    methods : {
      //点击返回
      onClickLeft : function () {
-       window.location.href = 'whfw.html';
+       window.location.href = 'gbys.html';
      },
    }
  })
