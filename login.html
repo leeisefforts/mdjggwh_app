@@ -109,7 +109,7 @@
     </div>
   </div>
 
-	<div class="dsf_login">
+<!-- 	<div class="dsf_login">
 		<div class="title">&nbsp其他方式登录&nbsp</div>
 		<div class="dsf_login_con">
 			<ul>
@@ -118,7 +118,7 @@
 				<li @click='WB_login'><img src="img/wb.png" alt=""></li>
 			</ul>
 		</div>
-	</div>
+	</div> -->
 	
 	<div v-if='loading_show' class="loading">
 		<div class="loading_con"><img src="img/loading.gif" alt=""></div>
@@ -139,29 +139,23 @@
     },
     //页面编译之后
     created: function () {
-// 			var _this = this;
-//       console.log(document.cookie)
-// 			// _this.loading_show = true
-// 			if(document.cookie){
-// 				window.location.href = 'user.html'
-// 			}
     },
     methods : {
       onClickLeft : function () {
         window.location.href = 'index.html';
       },
-			WX_login : function(){
-				console.log("微信");
-        authLogin('weixin');
-			},
-			QQ_login : function(){
-				console.log("QQ");
-        authLogin('qq');
-			},
-			WB_login : function(){
-				console.log("微博");
-        authLogin('sinaweibo');
-			},
+// 			WX_login : function(){
+// 				console.log("微信");
+//         authLogin('weixin');
+// 			},
+// 			QQ_login : function(){
+// 				console.log("QQ");
+//         authLogin('qq');
+// 			},
+// 			WB_login : function(){
+// 				console.log("微博");
+//         authLogin('sinaweibo');
+// 			},
 			login : function(){
 				var _this = this;
 				var name = _this.username;
@@ -199,7 +193,7 @@
 	
 	
 
-
+/*
 	//第三方登录
 	var auths = ''
 	mui.plusReady(function() {  
@@ -255,6 +249,7 @@
 			}
 		}
 	}
+	*/
 
 </script>
 </html>

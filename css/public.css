@@ -86,7 +86,7 @@ body{
 	background: rgba(0,0,0,0.5);
 	margin: 75% auto 0 auto;
 	padding: 15px;
-	border-radius: 5px;
+	border-radius: 5px; 
 }
 .loading_con img{
 	width: 100%;
