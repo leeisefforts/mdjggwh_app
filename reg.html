@@ -192,6 +192,7 @@
 				console.log(_this.flag_name +'---' +_this.flag_mail +'---' +_this.flag_pass +'---' +_this.flag_pass2 +'---' +_this.checked )
 				if(_this.flag_name && _this.flag_mail && _this.flag_pass && _this.flag_pass2){
 					if(!_this.checked){
+						_this.loading_show = false
 						mui.toast('请阅读并接受');
 						return false
 					}
